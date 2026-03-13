@@ -46,81 +46,173 @@ A comprehensive, production-ready hospital management system built with Node.js/
 | Charts | Chart.js / react-chartjs-2 |
 | Deployment | Docker / Docker Compose / Nginx |
 
-## 🚀 Quick Start
+## 🚀 How to Run
 
 ### Prerequisites
-- Node.js 18+
-- PostgreSQL 15+
-- Docker (optional)
+- **[Node.js 18+](https://nodejs.org/)** – required for manual setup
+- **[PostgreSQL 15+](https://www.postgresql.org/download/)** – required for manual setup
+- **[Docker + Docker Compose](https://docs.docker.com/get-docker/)** – required for Docker setup (recommended, no separate PostgreSQL needed)
 
-### Option 1: Docker Compose (Recommended)
+---
+
+### ▶ Option 1: Docker Compose (Recommended — fastest, no local DB needed)
+
+This is the easiest way to run everything with a single command.
 
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/vishalgiri2612/hospital-management-ai.git
 cd hospital-management-ai
 
-# Copy and edit environment variables
+# 2. (Optional) customise secrets — the defaults work for local testing
 cp backend/.env.example backend/.env
-# Edit backend/.env with your settings
+# Open backend/.env and change DB_PASSWORD, JWT_SECRET, JWT_REFRESH_SECRET
+# if you want to use your own values.
 
-# Build and start all services
+# 3. Build images and start all three services (PostgreSQL + API + React)
 docker compose up -d
 
-# Access the app
-# Frontend: http://localhost
-# Backend API: http://localhost:5000
-# API Docs: http://localhost:5000/api-docs
+# 4. Wait ~30 seconds for the database to initialise, then seed the admin account
+docker exec hms_backend node scripts/seedAdmin.js
 ```
 
-### Option 2: Manual Setup
+**Access the application:**
 
-#### Backend Setup
+| Service | URL |
+|---------|-----|
+| 🖥 Frontend (React) | http://localhost |
+| ⚙️  Backend API | http://localhost:5000 |
+| 📚 API Docs (Swagger) | http://localhost:5000/api-docs |
+| 🔍 Health check | http://localhost:5000/health |
+
+**Default admin login** (created by the seed command above):
+
+| Field | Value |
+|-------|-------|
+| Email | `admin@hospital.com` |
+| Password | `Admin@12345` |
+
+> ⚠️ Change the password immediately after your first login.
+
+**Stop the application:**
+```bash
+docker compose down          # stop containers (data is preserved)
+docker compose down -v       # stop containers AND delete database volume
+```
+
+---
+
+### ▶ Option 2: Manual Setup (Node.js + local PostgreSQL)
+
+#### Step 1 – Create the database
+
+```sql
+-- run as the postgres superuser
+CREATE DATABASE hospital_db;
+CREATE USER hms_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE hospital_db TO hms_user;
+```
+
+#### Step 2 – Configure the backend
+
 ```bash
 cd backend
-
-# Install dependencies
-npm install
-
-# Copy environment file and configure
 cp .env.example .env
-# Edit .env with your database credentials and JWT secrets
-
-# Run database migrations and seed (if available)
-# npx sequelize-cli db:migrate
-# npx sequelize-cli db:seed:all
-
-# Start development server
-npm run dev
-
-# Backend runs at: http://localhost:5000
-# API Docs: http://localhost:5000/api-docs
 ```
 
-#### Frontend Setup
+Open `backend/.env` and set at minimum:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=hospital_db
+DB_USER=hms_user
+DB_PASSWORD=your_password        # match what you used above
+
+JWT_SECRET=a-very-long-random-string-at-least-32-chars
+JWT_REFRESH_SECRET=another-very-long-random-string
+
+FRONTEND_URL=http://localhost:3000
+```
+
+#### Step 3 – Start the backend
+
+```bash
+cd backend
+npm install          # install dependencies
+npm run dev          # starts on http://localhost:5000
+```
+
+The first time the server starts it automatically **creates all database tables** (Sequelize `sync`). You will see:
+
+```
+Database connection established successfully.
+Database models synchronized.
+🏥 Hospital Management API running on port 5000
+📚 API Docs available at http://localhost:5000/api-docs
+```
+
+#### Step 4 – Seed the default admin account
+
+Open a second terminal:
+
+```bash
+cd backend
+npm run seed:admin
+```
+
+Expected output:
+
+```
+✅ Admin account created successfully.
+   Email   : admin@hospital.com
+   Password: Admin@12345
+   ⚠️  Change this password after your first login!
+```
+
+#### Step 5 – Configure and start the frontend
+
 ```bash
 cd frontend
-
-# Install dependencies
-npm install
-
-# Copy and configure environment
 cp .env.example .env
+# The default .env works with http://localhost:5000 out of the box
 
-# Start development server
-npm start
-
-# Frontend runs at: http://localhost:3000
+npm install
+npm start            # starts on http://localhost:3000
 ```
 
-### Running Tests
+**Access the application:**
+
+| Service | URL |
+|---------|-----|
+| 🖥 Frontend (React) | http://localhost:3000 |
+| ⚙️  Backend API | http://localhost:5000 |
+| 📚 API Docs (Swagger) | http://localhost:5000/api-docs |
+
+---
+
+### 🧪 Running Tests
+
 ```bash
 cd backend
-npm test           # Run all tests
-npm run test:unit  # Unit tests only
-npm run test:integration  # Integration tests only
-npm run test:coverage     # With coverage report
+npm test                   # run all tests
+npm run test:unit          # unit tests only  (AI services, helpers)
+npm run test:integration   # integration tests only  (Auth API)
+npm run test:coverage      # all tests with coverage report
 ```
+
+---
+
+### 🩺 Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---------|-------------|-----|
+| `Unable to connect to the database` | PostgreSQL not running / wrong credentials | Verify `DB_*` values in `.env` and that PostgreSQL is running |
+| Backend exits immediately on start | Missing required env vars | Make sure `backend/.env` exists and `JWT_SECRET` / `DB_PASSWORD` are set |
+| `Cannot GET /` on port 5000 | You're hitting the API root — that's normal | Use `/health` to check status or `/api-docs` for the UI |
+| Frontend shows "Network Error" | Backend not running or wrong `REACT_APP_API_URL` | Start the backend first; check `frontend/.env` |
+| Docker: `port 80 already in use` | Another process is using port 80 | Change the frontend port mapping in `docker-compose.yml` (e.g. `"8080:80"`) |
+| Docker: seed command fails | Container not ready yet | Wait 30 s for the health check to pass, then re-run `docker exec hms_backend node scripts/seedAdmin.js` |
 
 ## 📁 Project Structure
 

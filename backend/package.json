@@ -7,11 +7,14 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "test": "jest --testEnvironment node --runInBand",
+    "test:unit": "jest --testPathPattern=tests/unit --testEnvironment node --runInBand",
+    "test:integration": "jest --testPathPattern=tests/integration --testEnvironment node --runInBand",
     "test:coverage": "jest --coverage --testEnvironment node --runInBand",
     "lint": "eslint src/ --ext .js",
     "db:migrate": "npx sequelize-cli db:migrate",
     "db:migrate:undo": "npx sequelize-cli db:migrate:undo",
-    "db:seed": "npx sequelize-cli db:seed:all"
+    "db:seed": "npx sequelize-cli db:seed:all",
+    "seed:admin": "node scripts/seedAdmin.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
