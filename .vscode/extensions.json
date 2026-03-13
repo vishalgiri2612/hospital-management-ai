@@ -1,0 +1,26 @@
+{
+  "recommendations": [
+    // JavaScript / Node.js
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "christian-kohler.path-intellisense",
+
+    // React / Frontend
+    "dsznajder.es7-react-js-snippets",
+
+    // REST API testing (alternative to Postman)
+    "humao.rest-client",
+
+    // Docker / Containers
+    "ms-azuretools.vscode-docker",
+
+    // YAML (docker-compose editing)
+    "redhat.vscode-yaml",
+
+    // Git
+    "eamodio.gitlens",
+
+    // Icons (improves project navigation)
+    "pkief.material-icon-theme"
+  ]
+}

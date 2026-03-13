@@ -32,8 +32,7 @@ lerna-debug.log*
 ehthumbs.db
 Thumbs.db
 
-# IDE
-.vscode/
+# IDE (personal settings — VS Code workspace config is tracked separately)
 .idea/
 *.swp
 *.swo

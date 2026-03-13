@@ -1,0 +1,145 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    // ── Setup ─────────────────────────────────────────────────────────────────
+    {
+      "label": "⚙️  Setup: Copy backend .env",
+      "type": "shell",
+      "command": "cp .env.example .env",
+      "windows": { "command": "copy .env.example .env" },
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "⚙️  Setup: Copy frontend .env",
+      "type": "shell",
+      "command": "cp .env.example .env",
+      "windows": { "command": "copy .env.example .env" },
+      "options": { "cwd": "${workspaceFolder}/frontend" },
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "⚙️  Setup: Install backend dependencies",
+      "type": "shell",
+      "command": "npm install",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "⚙️  Setup: Install frontend dependencies",
+      "type": "shell",
+      "command": "npm install",
+      "options": { "cwd": "${workspaceFolder}/frontend" },
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "⚙️  Setup: Install all dependencies",
+      "dependsOn": [
+        "⚙️  Setup: Install backend dependencies",
+        "⚙️  Setup: Install frontend dependencies"
+      ],
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "⚙️  Setup: Seed admin account",
+      "type": "shell",
+      "command": "npm run seed:admin",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    // ── Run ───────────────────────────────────────────────────────────────────
+    {
+      "label": "▶  Start backend (dev + hot reload)",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [{ "regexp": "^$" }],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "\\[nodemon\\] starting",
+          "endsPattern": "running on port"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "run" }
+    },
+    {
+      "label": "▶  Start backend (debug mode)",
+      "type": "shell",
+      "command": "npm run dev:debug",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [{ "regexp": "^$" }],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "\\[nodemon\\] starting",
+          "endsPattern": "running on port"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "run" }
+    },
+    {
+      "label": "▶  Start frontend",
+      "type": "shell",
+      "command": "npm start",
+      "options": { "cwd": "${workspaceFolder}/frontend" },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": [{ "regexp": "^$" }],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting the development server",
+          "endsPattern": "compiled successfully"
+        }
+      },
+      "presentation": { "reveal": "always", "panel": "dedicated", "group": "run" }
+    },
+    // ── Tests ─────────────────────────────────────────────────────────────────
+    {
+      "label": "🧪 Test: backend (all)",
+      "type": "shell",
+      "command": "npm test",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "group": { "kind": "test", "isDefault": true },
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "🧪 Test: backend unit tests",
+      "type": "shell",
+      "command": "npm run test:unit",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "🧪 Test: backend integration tests",
+      "type": "shell",
+      "command": "npm run test:integration",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "🧪 Test: backend with coverage",
+      "type": "shell",
+      "command": "npm run test:coverage",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    // ── Lint ──────────────────────────────────────────────────────────────────
+    {
+      "label": "🔍 Lint: backend",
+      "type": "shell",
+      "command": "npm run lint",
+      "options": { "cwd": "${workspaceFolder}/backend" },
+      "group": "build",
+      "presentation": { "reveal": "always", "panel": "shared" }
+    }
+  ]
+}
