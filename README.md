@@ -46,6 +46,59 @@ A comprehensive, production-ready hospital management system built with Node.js/
 | Charts | Chart.js / react-chartjs-2 |
 | Deployment | Docker / Docker Compose / Nginx |
 
+## ⬇️ Get the Code
+
+Before you can run the project you need a local copy. Pick whichever method is most comfortable for you.
+
+### Method A — Git (recommended)
+
+Git is the standard tool for working with source code.
+
+1. **Install Git** if you haven't already → https://git-scm.com/downloads
+2. Open a terminal (macOS: **Terminal**, Windows: **Git Bash** or **Command Prompt**, Linux: any shell)
+3. Run:
+
+```bash
+git clone https://github.com/vishalgiri2612/hospital-management-ai.git
+cd hospital-management-ai
+```
+
+You now have the full project in a folder called `hospital-management-ai`.
+
+---
+
+### Method B — Download ZIP (no Git required)
+
+If you'd rather not install Git:
+
+1. Go to the repository page on GitHub:
+   **https://github.com/vishalgiri2612/hospital-management-ai**
+2. Click the green **`<> Code`** button near the top-right
+3. Choose **Download ZIP**
+4. Extract the ZIP somewhere on your computer (e.g. `Documents/hospital-management-ai`)
+5. Open a terminal and `cd` into the extracted folder:
+
+```bash
+cd path/to/hospital-management-ai
+```
+
+> ⚠️ ZIP downloads do not include git history and cannot be used to pull future updates. Use `git clone` if you plan to keep your copy up to date.
+
+---
+
+### Method C — GitHub Desktop (GUI, no command line needed)
+
+[GitHub Desktop](https://desktop.github.com/) lets you clone, branch, and commit without typing any commands.
+
+1. Install GitHub Desktop → https://desktop.github.com/
+2. Open GitHub Desktop and sign in (or skip sign-in for public repos)
+3. Choose **File → Clone Repository…** → **URL tab**
+4. Paste `https://github.com/vishalgiri2612/hospital-management-ai.git`
+5. Choose a local folder and click **Clone**
+6. When the clone finishes, click **Open in Visual Studio Code** (or your editor of choice)
+
+---
+
 ## 🚀 How to Run
 
 ### Prerequisites
@@ -60,8 +113,7 @@ A comprehensive, production-ready hospital management system built with Node.js/
 This is the easiest way to run everything with a single command.
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/vishalgiri2612/hospital-management-ai.git
+# 1. Make sure you have a local copy of the code first — see "Get the Code" above
 cd hospital-management-ai
 
 # 2. (Optional) customise secrets — the defaults work for local testing
@@ -199,13 +251,14 @@ This is the best option if you want to **set breakpoints**, step through code, o
 - [VS Code](https://code.visualstudio.com/) installed
 - Node.js 18+ and PostgreSQL 15+ installed (same as Option 2)
 
-#### Step 1 – Open the project workspace
+#### Step 1 – Get the code and open the project workspace
+
+First download the code using one of the methods in the **[Get the Code](#get-the-code)** section above.
+
+Then open the project in VS Code:
 
 ```bash
-# Clone if you haven't already
-git clone https://github.com/vishalgiri2612/hospital-management-ai.git
-
-# Open the root folder in VS Code
+# Open the root folder in VS Code from a terminal
 code hospital-management-ai
 ```
 
