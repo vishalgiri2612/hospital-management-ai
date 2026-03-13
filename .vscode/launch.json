@@ -1,0 +1,71 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // ── Backend ──────────────────────────────────────────────────────────────
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🐛 Debug Backend (launch)",
+      "program": "${workspaceFolder}/backend/src/app.js",
+      "cwd": "${workspaceFolder}/backend",
+      "envFile": "${workspaceFolder}/backend/.env",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "🔗 Attach to Backend (nodemon --inspect)",
+      "port": 9229,
+      "restart": true,
+      "skipFiles": ["<node_internals>/**"],
+      "localRoot": "${workspaceFolder}/backend",
+      "remoteRoot": "${workspaceFolder}/backend"
+    },
+    // ── Tests ─────────────────────────────────────────────────────────────────
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🧪 Debug Backend Tests (all)",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["test", "--"],
+      "args": ["--runInBand"],
+      "cwd": "${workspaceFolder}/backend",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🧪 Debug Backend Tests (current file)",
+      "runtimeExecutable": "${workspaceFolder}/backend/node_modules/.bin/jest",
+      "args": ["${relativeFile}", "--runInBand", "--testEnvironment", "node"],
+      "cwd": "${workspaceFolder}/backend",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    // ── Frontend ──────────────────────────────────────────────────────────────
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "🌐 Launch Frontend in Chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/frontend/src",
+      "sourceMapPathOverrides": {
+        "webpack:///src/*": "${webRoot}/*"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "🏥 Full Stack (Backend + Frontend)",
+      "configurations": ["🐛 Debug Backend (launch)", "🌐 Launch Frontend in Chrome"],
+      "stopAll": true,
+      "presentation": {
+        "hidden": false,
+        "group": "fullstack",
+        "order": 1
+      }
+    }
+  ]
+}
