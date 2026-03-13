@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
+    "dev:debug": "nodemon --inspect src/app.js",
     "test": "jest --testEnvironment node --runInBand",
     "test:unit": "jest --testPathPattern=tests/unit --testEnvironment node --runInBand",
     "test:integration": "jest --testPathPattern=tests/integration --testEnvironment node --runInBand",

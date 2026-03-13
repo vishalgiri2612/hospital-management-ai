@@ -191,7 +191,119 @@ npm start            # starts on http://localhost:3000
 
 ---
 
-### 🧪 Running Tests
+### 💻 Option 3: VS Code (with integrated debugging and tasks)
+
+This is the best option if you want to **set breakpoints**, step through code, or use VS Code's built-in terminal.
+
+#### Prerequisites
+- [VS Code](https://code.visualstudio.com/) installed
+- Node.js 18+ and PostgreSQL 15+ installed (same as Option 2)
+
+#### Step 1 – Open the project workspace
+
+```bash
+# Clone if you haven't already
+git clone https://github.com/vishalgiri2612/hospital-management-ai.git
+
+# Open the root folder in VS Code
+code hospital-management-ai
+```
+
+Or use **File → Open Folder…** and select the `hospital-management-ai` folder.
+
+#### Step 2 – Install recommended extensions
+
+VS Code will automatically prompt: _"Do you want to install the recommended extensions for this repository?"_ — click **Install All**.
+
+If the prompt doesn't appear, open the Extensions panel (`Ctrl+Shift+X` / `Cmd+Shift+X`), type `@recommended`, and install from the list.
+
+Key extensions installed:
+- **ESLint** – inline linting
+- **Prettier** – auto-format on save
+- **Docker** – docker-compose support
+- **REST Client** – send API requests from `.http` files
+- **ES7+ React Snippets** – React component shortcuts
+
+#### Step 3 – Run setup tasks (first time only)
+
+Open the **Command Palette** (`Ctrl+Shift+P` / `Cmd+Shift+P`) and type:
+
+```
+Tasks: Run Task
+```
+
+Run these tasks **in order** the first time:
+
+| # | Task name | What it does |
+|---|-----------|-------------|
+| 1 | `⚙️  Setup: Copy backend .env` | Creates `backend/.env` from the example |
+| 2 | `⚙️  Setup: Copy frontend .env` | Creates `frontend/.env` from the example |
+| 3 | `⚙️  Setup: Install all dependencies` | `npm install` in both `backend/` and `frontend/` |
+
+> After step 1, **open `backend/.env`** and fill in `DB_PASSWORD`, `JWT_SECRET`, and `JWT_REFRESH_SECRET`.
+
+#### Step 4 – Start the application
+
+**Option A – Use integrated tasks:**
+
+Open **Terminal → Run Task** and run:
+- `▶  Start backend (dev + hot reload)` — starts on http://localhost:5000
+- `▶  Start frontend` — starts on http://localhost:3000
+
+VS Code opens a dedicated terminal panel for each process.
+
+**Option B – Use the debugger (supports breakpoints):**
+
+1. Press `F5` or open the **Run and Debug** panel (`Ctrl+Shift+D` / `Cmd+Shift+D`)
+2. Select a configuration from the dropdown:
+
+| Configuration | Description |
+|--------------|-------------|
+| `🐛 Debug Backend (launch)` | Starts backend with Node.js debugger. Set breakpoints in any `.js` file. |
+| `🔗 Attach to Backend (nodemon --inspect)` | First run task `▶  Start backend (debug mode)`, then attach. Supports hot reload **and** breakpoints. |
+| `🧪 Debug Backend Tests (all)` | Run all Jest tests with the debugger. |
+| `🧪 Debug Backend Tests (current file)` | Debug only the test file currently open in the editor. |
+| `🌐 Launch Frontend in Chrome` | Opens Chrome pointed at http://localhost:3000 with source maps. |
+| `🏥 Full Stack (Backend + Frontend)` | Launches backend and Chrome in one click. |
+
+#### Step 5 – Seed the admin account
+
+In the Command Palette, run:
+
+```
+Tasks: Run Task → ⚙️  Setup: Seed admin account
+```
+
+Or open an integrated terminal (`Ctrl+` `` ` ``) and run:
+
+```bash
+cd backend
+npm run seed:admin
+```
+
+#### Step 6 – Access the app
+
+| Service | URL |
+|---------|-----|
+| 🖥 Frontend | http://localhost:3000 |
+| ⚙️  Backend API | http://localhost:5000 |
+| 📚 Swagger Docs | http://localhost:5000/api-docs |
+
+Default login: `admin@hospital.com` / `Admin@12345`
+
+#### Running tests from VS Code
+
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+Shift+P` → `Tasks: Run Test Task` | Run all backend tests |
+| Select `🧪 Test: backend unit tests` | Unit tests only |
+| Select `🧪 Test: backend integration tests` | Integration tests only |
+| Select `🧪 Test: backend with coverage` | Full coverage report |
+| `F5` with `🧪 Debug Backend Tests (current file)` | Debug the open test file |
+
+---
+
+### 🧪 Running Tests (terminal)
 
 ```bash
 cd backend
@@ -200,6 +312,8 @@ npm run test:unit          # unit tests only  (AI services, helpers)
 npm run test:integration   # integration tests only  (Auth API)
 npm run test:coverage      # all tests with coverage report
 ```
+
+> In VS Code, open the Command Palette (`Ctrl+Shift+P`) and choose **Tasks: Run Test Task** to run tests without leaving the editor.
 
 ---
 
@@ -218,6 +332,11 @@ npm run test:coverage      # all tests with coverage report
 
 ```
 hospital-management-ai/
+├── .vscode/
+│   ├── launch.json      # Debugger configurations (F5)
+│   ├── tasks.json       # Run/test/setup tasks (Ctrl+Shift+P → Tasks)
+│   ├── extensions.json  # Recommended extensions
+│   └── settings.json    # Workspace editor/ESLint settings
 ├── backend/
 │   ├── src/
 │   │   ├── config/          # Database, Swagger config
@@ -229,6 +348,8 @@ hospital-management-ai/
 │   │   │   └── ai/          # AI/ML service modules
 │   │   ├── utils/           # Helpers, logger
 │   │   └── app.js           # Application entry point
+│   ├── scripts/
+│   │   └── seedAdmin.js     # Seeds the default admin account
 │   ├── tests/
 │   │   ├── unit/            # Unit tests
 │   │   └── integration/     # Integration tests
